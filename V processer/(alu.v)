@@ -1,0 +1,31 @@
+module alu (
+    input  signed [31:0] a,
+    input  signed [31:0] b,
+    input  [3:0] alu_control,
+    output reg signed [31:0] result,
+    output zero
+);
+
+    always @(*) begin
+        case (alu_control)
+
+            4'b0010: result = a + b; // ADD
+            4'b0110: result = a - b; // SUB
+            4'b0000: result = a & b; // AND
+            4'b0001: result = a | b; // OR
+
+            4'b0111: begin
+                if (a < b)
+                    result = 32'd1;
+                else
+                    result = 32'd0;
+            end
+
+            default: result = 32'd0;
+
+        endcase
+    end
+
+    assign zero = (result == 0);
+
+endmodule
